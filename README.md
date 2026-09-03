@@ -1,32 +1,28 @@
-# React + TypeScript + Vite
+# Pets application
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This repository contains the pets application frontend and backend:
 
-Currently, two official plugins are available:
+- `frontend/`: React + Vite + TypeScript client
+- `backend/`: FastAPI server
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Frontend
 
-## React Compiler
+Install dependencies and start the development server:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+make frontend-install
+make frontend-dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+The frontend uses `http://localhost:8000` as its API URL by default. This
+value can be changed in `frontend/.env`.
+
+## Backend
+
+The backend directory is reserved for the FastAPI application.
+
+Start the backend development server with:
+
+```bash
+make backend-dev
+```

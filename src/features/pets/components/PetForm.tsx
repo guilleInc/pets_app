@@ -1,9 +1,9 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import type { Pet, PetCreate, PetUpdate } from '../types/pet'
+import type { Pet, PetFields } from '../types/pet'
 
 type PetFormProps = {
   pet?: Pet
-  onSubmit: (data: PetCreate | PetUpdate) => Promise<void>
+  onSubmit: (data: PetFields) => Promise<void>
   onCancel?: () => void
 }
 

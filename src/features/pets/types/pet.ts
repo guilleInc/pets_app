@@ -1,5 +1,4 @@
-export type Pet = {
-  id: number
+export type PetFields = {
   name: string
   species: string
   breed: string
@@ -8,6 +7,10 @@ export type Pet = {
   age: number
 }
 
-export type PetCreate = Omit<Pet, 'id'>
+export type Pet = PetFields & {
+  id: number
+}
 
-export type PetUpdate = Partial<PetCreate>
+export type PetCreate = PetFields
+
+export type PetUpdate = Partial<PetFields>

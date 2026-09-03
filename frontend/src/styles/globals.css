@@ -1,0 +1,163 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #1f2937;
+  background: #f8fafc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  padding: 0.65rem 1rem;
+}
+
+button[type='submit'],
+main > header button {
+  color: white;
+  background: #2563eb;
+}
+
+button[type='button']:not(main > header button) {
+  background: #e5e7eb;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+main {
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 3rem 1.25rem;
+}
+
+main > header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+header p {
+  color: #64748b;
+  margin: 0 0 0.35rem;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+.pet-list {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.pet-card,
+.pet-form {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+
+.pet-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pet-card dl {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.pet-card dt {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.pet-card dd {
+  margin: 0.15rem 0 0;
+}
+
+.pet-card__actions,
+.pet-form__actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.pet-form {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.pet-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.pet-form input {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+  padding: 0.65rem 0.75rem;
+}
+
+[role='alert'],
+[role='status'] {
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+[role='alert'] {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+[role='dialog'] {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 3rem rgb(15 23 42 / 20%);
+  left: 50%;
+  max-width: 22rem;
+  padding: 1.5rem;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 2rem);
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 2rem 1rem;
+  }
+
+  main > header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

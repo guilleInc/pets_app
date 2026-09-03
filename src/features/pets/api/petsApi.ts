@@ -15,4 +15,3 @@ export const petsApi = {
   remove: (id: number) =>
     apiClient.delete(`${PETS_ENDPOINT}/${id}`),
 }
-Exp

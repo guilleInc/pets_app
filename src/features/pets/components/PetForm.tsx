@@ -7,7 +7,7 @@ type PetFormProps = {
   onCancel?: () => void
 }
 
-type FormValues = Omit<PetCreate, 'age'> & {
+type FormValues = Omit<PetFields, 'age'> & {
   age: string
 }
 

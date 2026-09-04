@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { PetForm } from '../components/PetForm'
 import { PetList } from '../components/PetList'
+import { PetToolbar } from '../components/PetToolbar'
 import { usePets } from '../hooks/usePets'
 import type { Pet, PetFields } from '../types/pet'
 
@@ -9,6 +10,7 @@ export const PetsPage = () => {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [selectedPet, setSelectedPet] = useState<Pet | undefined>()
   const [petToDelete, setPetToDelete] = useState<number | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const handleCreate = () => {
     setSelectedPet(undefined)
@@ -70,6 +72,15 @@ export const PetsPage = () => {
     setPetToDelete(null)
   }
 
+  const normalizedQuery = searchQuery.trim().toLowerCase()
+  const filteredPets = normalizedQuery
+    ? pets.filter(
+        (pet) =>
+          pet.name.toLowerCase().includes(normalizedQuery) ||
+          pet.owner_name.toLowerCase().includes(normalizedQuery),
+      )
+    : pets
+
   return (
     <main>
       <header>
@@ -82,8 +93,10 @@ export const PetsPage = () => {
         </button>
       </header>
 
+      <PetToolbar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+
       <PetList
-        pets={pets}
+        pets={filteredPets}
         isLoading={isLoading}
         error={error}
         onEdit={handleEdit}

@@ -150,6 +150,87 @@ p {
   width: calc(100% - 2rem);
 }
 
+.pet-form-modal {
+  align-items: center;
+  background: rgb(15 23 42 / 45%);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  left: 0;
+  max-width: none;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  transform: none;
+  width: 100%;
+  z-index: 10;
+}
+
+.pet-form-modal__content {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 3rem rgb(15 23 42 / 20%);
+  max-height: calc(100vh - 2rem);
+  max-width: 32rem;
+  overflow-y: auto;
+  padding: 1.5rem;
+  width: 100%;
+}
+
+.pet-form-modal__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.pet-form-modal__header h2 {
+  margin-bottom: 0;
+}
+
+.pet-form-modal__close {
+  align-items: center;
+  background: transparent;
+  border-radius: 50%;
+  color: #64748b;
+  display: flex;
+  font-size: 1.5rem;
+  height: 2.75rem;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  width: 2.75rem;
+}
+
+.pet-form-modal__close:hover {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.pet-form-modal__close:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.pet-form-modal button.button--danger {
+  background: #dc2626;
+  color: white;
+}
+
+.pet-form-modal button.button--danger:hover {
+  background: #b91c1c;
+}
+
+.pet-form-modal .pet-form {
+  border: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
 @media (max-width: 480px) {
   main {
     padding: 2rem 1rem;

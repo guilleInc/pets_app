@@ -102,9 +102,79 @@ p {
 }
 
 .pet-card {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.pet-card:hover {
+  border-color: #94a3b8;
+}
+
+.pet-card:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.pet-card__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pet-card__header h2 {
+  margin-bottom: 0;
+}
+
+.pet-card__menu-wrapper {
+  position: relative;
+}
+
+.pet-card button.pet-card__menu {
+  background: transparent;
+  border-radius: 50%;
+  color: #64748b;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0.35rem;
+}
+
+.pet-card button.pet-card__menu:hover {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.pet-card__menu:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.pet-card__menu-dropdown {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgb(15 23 42 / 15%);
+  display: grid;
+  gap: 0.25rem;
+  min-width: 7rem;
+  padding: 0.35rem;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.25rem);
+  z-index: 2;
+}
+
+.pet-card__menu-dropdown button[type='button'] {
+  background: transparent;
+  border-radius: 0.35rem;
+  padding: 0.5rem 0.65rem;
+  text-align: left;
+  width: 100%;
+}
+
+.pet-card__menu-dropdown button:hover {
+  background: #f1f5f9;
 }
 
 .pet-card dl {
@@ -121,9 +191,25 @@ p {
   margin: 0.15rem 0 0;
 }
 
+.pet-details {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.pet-details dt {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.pet-details dd {
+  margin: 0.15rem 0 0;
+}
+
 .pet-card__actions,
 .pet-form__actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.6rem;
   margin-top: 1.25rem;
 }

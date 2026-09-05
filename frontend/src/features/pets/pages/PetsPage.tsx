@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { PetDetails } from '../components/PetDetails'
 import { PetForm } from '../components/PetForm'
 import { PetList } from '../components/PetList'
 import { PetToolbar } from '../components/PetToolbar'
@@ -9,6 +10,7 @@ export const PetsPage = () => {
   const { pets, isLoading, error, createPet, updatePet, deletePet } = usePets()
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [selectedPet, setSelectedPet] = useState<Pet | undefined>()
+  const [petToView, setPetToView] = useState<Pet | undefined>()
   const [petToDelete, setPetToDelete] = useState<number | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -22,13 +24,17 @@ export const PetsPage = () => {
     setIsFormOpen(true)
   }
 
+  const handleViewDetails = (pet: Pet) => {
+    setPetToView(pet)
+  }
+
   const handleCloseForm = () => {
     setIsFormOpen(false)
     setSelectedPet(undefined)
   }
 
   useEffect(() => {
-    if (!isFormOpen && petToDelete === null) {
+    if (!isFormOpen && petToDelete === null && !petToView) {
       return
     }
 
@@ -39,8 +45,10 @@ export const PetsPage = () => {
       if (event.key === 'Escape') {
         if (isFormOpen) {
           handleCloseForm()
-        } else {
+        } else if (petToDelete !== null) {
           setPetToDelete(null)
+        } else {
+          setPetToView(undefined)
         }
       }
     }
@@ -50,7 +58,7 @@ export const PetsPage = () => {
       window.removeEventListener('keydown', handleKeyDown)
       document.body.style.overflow = previousOverflow
     }
-  }, [isFormOpen, petToDelete])
+  }, [isFormOpen, petToDelete, petToView])
 
   const handleSubmit = async (data: PetFields) => {
     if (selectedPet) {
@@ -99,6 +107,7 @@ export const PetsPage = () => {
         pets={filteredPets}
         isLoading={isLoading}
         error={error}
+        onViewDetails={handleViewDetails}
         onEdit={handleEdit}
         onDelete={setPetToDelete}
       />
@@ -160,6 +169,30 @@ export const PetsPage = () => {
                 Delete
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {petToView && (
+        <div
+          aria-labelledby="pet-details-title"
+          aria-modal="true"
+          className="pet-form-modal"
+          role="dialog"
+        >
+          <div className="pet-form-modal__content">
+            <div className="pet-form-modal__header">
+              <h2 id="pet-details-title">{petToView.name}</h2>
+              <button
+                aria-label="Close pet details"
+                className="pet-form-modal__close"
+                type="button"
+                onClick={() => setPetToView(undefined)}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <PetDetails pet={petToView} />
           </div>
         </div>
       )}

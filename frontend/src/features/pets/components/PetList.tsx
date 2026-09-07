@@ -5,6 +5,7 @@ type PetListProps = {
   pets: Pet[]
   isLoading: boolean
   error: string | null
+  onViewDetails: (pet: Pet) => void
   onEdit: (pet: Pet) => void
   onDelete: (id: number) => void
 }
@@ -13,6 +14,7 @@ export const PetList = ({
   pets,
   isLoading,
   error,
+  onViewDetails,
   onEdit,
   onDelete,
 }: PetListProps) => {
@@ -38,6 +40,7 @@ export const PetList = ({
         <PetCard
           key={pet.id}
           pet={pet}
+          onViewDetails={onViewDetails}
           onEdit={onEdit}
           onDelete={onDelete}
         />

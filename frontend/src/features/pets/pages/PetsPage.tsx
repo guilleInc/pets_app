@@ -6,6 +6,8 @@ import { PetToolbar } from '../components/PetToolbar'
 import { usePets } from '../hooks/usePets'
 import type { Pet, PetFields } from '../types/pet'
 
+const PETS_PER_BATCH = 6
+
 export const PetsPage = () => {
   const { pets, isLoading, error, createPet, updatePet, deletePet } = usePets()
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -13,6 +15,7 @@ export const PetsPage = () => {
   const [petToView, setPetToView] = useState<Pet | undefined>()
   const [petToDelete, setPetToDelete] = useState<number | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [visibleCount, setVisibleCount] = useState(PETS_PER_BATCH)
 
   const handleCreate = () => {
     setSelectedPet(undefined)
@@ -80,6 +83,11 @@ export const PetsPage = () => {
     setPetToDelete(null)
   }
 
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value)
+    setVisibleCount(PETS_PER_BATCH)
+  }
+
   const normalizedQuery = searchQuery.trim().toLowerCase()
   const filteredPets = normalizedQuery
     ? pets.filter(
@@ -88,6 +96,8 @@ export const PetsPage = () => {
           pet.owner_name.toLowerCase().includes(normalizedQuery),
       )
     : pets
+  const visiblePets = filteredPets.slice(0, visibleCount)
+  const hasMorePets = visibleCount < filteredPets.length
 
   return (
     <main>
@@ -101,16 +111,32 @@ export const PetsPage = () => {
         </button>
       </header>
 
-      <PetToolbar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <PetToolbar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
 
       <PetList
-        pets={filteredPets}
+        pets={visiblePets}
         isLoading={isLoading}
         error={error}
         onViewDetails={handleViewDetails}
         onEdit={handleEdit}
         onDelete={setPetToDelete}
       />
+
+      {!isLoading && !error && filteredPets.length > 0 && (
+        <div className="pet-list-footer">
+          <p aria-live="polite">
+            Showing {visiblePets.length} of {filteredPets.length} pets
+          </p>
+          {hasMorePets && (
+            <button
+              type="button"
+              onClick={() => setVisibleCount((count) => count + PETS_PER_BATCH)}
+            >
+              Load more
+            </button>
+          )}
+        </div>
+      )}
 
       {isFormOpen && (
         <div

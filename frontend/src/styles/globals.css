@@ -93,6 +93,19 @@ p {
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }
 
+.pet-list-footer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.pet-list-footer p {
+  color: #64748b;
+  margin-bottom: 0;
+}
+
 .pet-card,
 .pet-form {
   background: white;

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Pet } from '../types/pet'
 
 type PetCardProps = {
@@ -10,7 +10,26 @@ type PetCardProps = {
 
 export const PetCard = ({ pet, onViewDetails, onEdit, onDelete }: PetCardProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
   const menuId = `pet-menu-${pet.id}`
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return
+    }
+
+    const handleOutsidePointerDown = (event: PointerEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('pointerdown', handleOutsidePointerDown)
+
+    return () => {
+      document.removeEventListener('pointerdown', handleOutsidePointerDown)
+    }
+  }, [isMenuOpen])
 
   const handleEdit = () => {
     setIsMenuOpen(false)
@@ -40,6 +59,7 @@ export const PetCard = ({ pet, onViewDetails, onEdit, onDelete }: PetCardProps) 
         <div className="pet-card__header">
           <h2>{pet.name}</h2>
           <div
+            ref={menuRef}
             className="pet-card__menu-wrapper"
             onClick={(event) => event.stopPropagation()}
             onKeyDown={(event) => event.stopPropagation()}

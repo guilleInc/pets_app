@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">Pet image unavailable</title>
+  <desc id="desc">A simple paw print on a soft blue background</desc>
+  <rect width="640" height="400" rx="24" fill="#e0f2fe"/>
+  <g fill="#0284c7" transform="translate(320 206)">
+    <ellipse cx="0" cy="48" rx="72" ry="58"/>
+    <circle cx="-72" cy="-18" r="28"/>
+    <circle cx="-22" cy="-58" r="29"/>
+    <circle cx="30" cy="-58" r="29"/>
+    <circle cx="76" cy="-18" r="28"/>
+  </g>
+</svg>

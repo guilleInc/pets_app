@@ -10,6 +10,7 @@ type PetCardProps = {
 
 export const PetCard = ({ pet, onViewDetails, onEdit, onDelete }: PetCardProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [hasImageError, setHasImageError] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const menuId = `pet-menu-${pet.id}`
 
@@ -55,53 +56,48 @@ export const PetCard = ({ pet, onViewDetails, onEdit, onDelete }: PetCardProps) 
         }
       }}
     >
-      <div className="pet-card__content">
-        <div className="pet-card__header">
-          <h2>{pet.name}</h2>
-          <div
-            ref={menuRef}
-            className="pet-card__menu-wrapper"
-            onClick={(event) => event.stopPropagation()}
-            onKeyDown={(event) => event.stopPropagation()}
+      <div className="pet-card__image-wrapper">
+        <img
+          alt={pet.image_url ? `${pet.name}, ${pet.species}` : `No image available for ${pet.name}`}
+          className="pet-card__image"
+          loading="lazy"
+          src={hasImageError ? '/pet-placeholder.svg' : pet.image_url ?? '/pet-placeholder.svg'}
+          onError={() => setHasImageError(true)}
+        />
+        <div
+          ref={menuRef}
+          className="pet-card__menu-wrapper"
+          onClick={(event) => event.stopPropagation()}
+          onKeyDown={(event) => event.stopPropagation()}
+        >
+          <button
+            aria-controls={menuId}
+            aria-expanded={isMenuOpen}
+            aria-label={`More options for ${pet.name}`}
+            className="pet-card__menu"
+            type="button"
+            onClick={() => setIsMenuOpen((open) => !open)}
           >
-            <button
-              aria-controls={menuId}
-              aria-expanded={isMenuOpen}
-              aria-label={`More options for ${pet.name}`}
-              className="pet-card__menu"
-              type="button"
-              onClick={() => setIsMenuOpen((open) => !open)}
-            >
-              <span aria-hidden="true">&#8942;</span>
-            </button>
-            {isMenuOpen && (
-              <div className="pet-card__menu-dropdown" id={menuId} role="menu">
-                <button type="button" role="menuitem" onClick={handleEdit}>
-                  Edit
-                </button>
-                <button type="button" role="menuitem" onClick={handleDelete}>
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
+            <span aria-hidden="true">&#8942;</span>
+          </button>
+          {isMenuOpen && (
+            <div className="pet-card__menu-dropdown" id={menuId} role="menu">
+              <button type="button" role="menuitem" onClick={handleEdit}>
+                Edit
+              </button>
+              <button type="button" role="menuitem" onClick={handleDelete}>
+                Delete
+              </button>
+            </div>
+          )}
         </div>
+        <h2 className="pet-card__title">{pet.name}</h2>
+      </div>
+      <div className="pet-card__content">
         <dl>
           <div>
             <dt>Species</dt>
             <dd>{pet.species}</dd>
-          </div>
-          <div>
-            <dt>Breed</dt>
-            <dd>{pet.breed}</dd>
-          </div>
-          <div>
-            <dt>Color</dt>
-            <dd>{pet.color}</dd>
-          </div>
-          <div>
-            <dt>Age</dt>
-            <dd>{pet.age}</dd>
           </div>
           <div>
             <dt>Owner</dt>

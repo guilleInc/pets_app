@@ -118,7 +118,37 @@ p {
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
   justify-content: space-between;
+}
+
+.pet-card__image-wrapper {
+  position: relative;
+}
+
+.pet-card__content {
+  padding: 1.25rem;
+}
+
+.pet-card__image {
+  aspect-ratio: 4 / 3;
+  background: #f1f5f9;
+  display: block;
+  border-radius: 0;
+  object-fit: cover;
+  width: 100%;
+}
+
+.pet-card__title {
+  bottom: 0;
+  color: #1f2937;
+  left: 0;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  position: absolute;
+  right: 0;
 }
 
 .pet-card:hover {
@@ -141,11 +171,14 @@ p {
 }
 
 .pet-card__menu-wrapper {
-  position: relative;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  z-index: 1;
 }
 
 .pet-card button.pet-card__menu {
-  background: transparent;
+  background: rgb(255 255 255 / 85%);
   border-radius: 50%;
   color: #64748b;
   font-size: 1.5rem;

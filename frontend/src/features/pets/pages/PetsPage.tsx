@@ -9,8 +9,9 @@ import type { Pet, PetFields } from '../types/pet'
 const PETS_PER_BATCH = 6
 
 export const PetsPage = () => {
-  const { pets, isLoading, error, createPet, updatePet, deletePet } = usePets()
+  const { pets, isLoading, error, createPet, uploadPetImage, updatePet, deletePet } = usePets()
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [createdPet, setCreatedPet] = useState<Pet | null>(null)
   const [selectedPet, setSelectedPet] = useState<Pet | undefined>()
   const [petToView, setPetToView] = useState<Pet | undefined>()
   const [petToDelete, setPetToDelete] = useState<number | null>(null)
@@ -19,6 +20,7 @@ export const PetsPage = () => {
 
   const handleCreate = () => {
     setSelectedPet(undefined)
+    setCreatedPet(null)
     setIsFormOpen(true)
   }
 
@@ -33,6 +35,7 @@ export const PetsPage = () => {
 
   const handleCloseForm = () => {
     setIsFormOpen(false)
+    setCreatedPet(null)
     setSelectedPet(undefined)
   }
 
@@ -63,15 +66,22 @@ export const PetsPage = () => {
     }
   }, [isFormOpen, petToDelete, petToView])
 
-  const handleSubmit = async (data: PetFields) => {
+  const handleSubmit = async (data: PetFields, image?: File) => {
     if (selectedPet) {
       await updatePet(selectedPet.id, data)
+      if (image) {
+        await uploadPetImage(selectedPet.id, image)
+      }
     } else {
-      await createPet(data)
+      const pet = createdPet ?? await createPet(data)
+      setCreatedPet(pet)
+
+      if (image) {
+        await uploadPetImage(pet.id, image)
+      }
     }
 
-    setIsFormOpen(false)
-    setSelectedPet(undefined)
+    handleCloseForm()
   }
 
   const handleDelete = async () => {

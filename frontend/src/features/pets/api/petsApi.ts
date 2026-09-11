@@ -9,6 +9,13 @@ export const petsApi = {
   create: (data: PetCreate) =>
     apiClient.post<Pet>(PETS_ENDPOINT, data),
 
+  uploadImage: (id: number, image: File) => {
+    const formData = new FormData()
+    formData.append('image', image)
+
+    return apiClient.post<Pet>(`${PETS_ENDPOINT}${id}/image`, formData)
+  },
+
   update: (id: number, data: PetUpdate) =>
     apiClient.patch<Pet>(`${PETS_ENDPOINT}${id}`, data),
 

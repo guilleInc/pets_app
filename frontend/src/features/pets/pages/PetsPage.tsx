@@ -3,12 +3,14 @@ import { PetDetails } from '../components/PetDetails'
 import { PetForm } from '../components/PetForm'
 import { PetList } from '../components/PetList'
 import { PetToolbar } from '../components/PetToolbar'
+import { useAuth } from '../../auth/context/useAuth'
 import { usePets } from '../hooks/usePets'
 import type { Pet, PetFields } from '../types/pet'
 
 const PETS_PER_BATCH = 6
 
 export const PetsPage = () => {
+  const { logout } = useAuth()
   const { pets, isLoading, error, createPet, uploadPetImage, updatePet, deletePet } = usePets()
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [createdPet, setCreatedPet] = useState<Pet | null>(null)
@@ -118,6 +120,9 @@ export const PetsPage = () => {
         </div>
         <button type="button" onClick={handleCreate}>
           Add pet
+        </button>
+        <button type="button" onClick={logout}>
+          Log out
         </button>
       </header>
 

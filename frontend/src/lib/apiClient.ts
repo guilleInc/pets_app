@@ -1,3 +1,5 @@
+import { AUTH_EXPIRED_EVENT, tokenStorage } from '../features/auth/storage/tokenStorage'
+
 const apiUrl = import.meta.env.VITE_API_URL?.trim()
 
 if (!apiUrl) {
@@ -10,15 +12,35 @@ type RequestOptions = Omit<RequestInit, 'body'> & {
   body?: unknown
 }
 
+const getErrorMessage = (responseBody: unknown, status: number) => {
+  if (typeof responseBody !== 'object' || responseBody === null) {
+    return `Request failed with status ${status}`
+  }
+
+  if ('detail' in responseBody && typeof responseBody.detail === 'string') {
+    return responseBody.detail
+  }
+
+  if ('message' in responseBody && typeof responseBody.message === 'string') {
+    return responseBody.message
+  }
+
+  return `Request failed with status ${status}`
+}
+
 const request = async <T>(
   path: string,
   { body, headers, ...options }: RequestOptions = {},
 ): Promise<T> => {
+  const token = tokenStorage.get()
   const response = await fetch(`${baseUrl}/${path.replace(/^\/+/, '')}`, {
     ...options,
     headers: {
       Accept: 'application/json',
       ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
+      ...(token
+        ? { Authorization: `${token.token_type} ${token.access_token}` }
+        : {}),
       ...headers,
     },
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
@@ -36,13 +58,12 @@ const request = async <T>(
   }
 
   if (!response.ok) {
-    const message =
-      typeof responseBody === 'object' &&
-      responseBody !== null &&
-      'detail' in responseBody &&
-      typeof responseBody.detail === 'string'
-        ? responseBody.detail
-        : `Request failed with status ${response.status}`
+    if (response.status === 401) {
+      tokenStorage.clear()
+      window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT))
+    }
+
+    const message = getErrorMessage(responseBody, response.status)
 
     throw new Error(message)
   }

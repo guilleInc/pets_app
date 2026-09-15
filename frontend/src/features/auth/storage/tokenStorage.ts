@@ -1,6 +1,7 @@
 import type { AuthToken } from '../types/auth'
 
 const TOKEN_STORAGE_KEY = 'pets-app.auth-token'
+export const AUTH_EXPIRED_EVENT = 'pets-app.auth-expired'
 
 const isAuthToken = (value: unknown): value is AuthToken => {
   if (typeof value !== 'object' || value === null) {

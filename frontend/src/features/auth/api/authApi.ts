@@ -18,6 +18,15 @@ const getErrorMessage = (responseBody: unknown, status: number) => {
     return responseBody.detail
   }
 
+  if (
+    typeof responseBody === 'object' &&
+    responseBody !== null &&
+    'message' in responseBody &&
+    typeof responseBody.message === 'string'
+  ) {
+    return responseBody.message
+  }
+
   return `Request failed with status ${status}`
 }
 

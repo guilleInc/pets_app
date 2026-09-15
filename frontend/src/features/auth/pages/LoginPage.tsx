@@ -30,10 +30,11 @@ export const LoginPage = ({ onSuccess }: LoginPageProps) => {
   return (
     <main className="login-page">
       <section aria-labelledby="login-title" className="login-card">
-        <p>Pet management</p>
+        <p className="login-card__eyebrow">Pet management</p>
         <h1 id="login-title">Log in</h1>
+        <p className="login-card__description">Sign in to manage your pets.</p>
         <form onSubmit={(event) => void handleSubmit(event)}>
-          <label>
+          <label className="login-form__field">
             Username
             <input
               autoComplete="username"
@@ -44,7 +45,7 @@ export const LoginPage = ({ onSuccess }: LoginPageProps) => {
               onChange={(event) => setUsername(event.target.value)}
             />
           </label>
-          <label>
+          <label className="login-form__field">
             Password
             <input
               autoComplete="current-password"
@@ -55,10 +56,8 @@ export const LoginPage = ({ onSuccess }: LoginPageProps) => {
               onChange={(event) => setPassword(event.target.value)}
             />
           </label>
-          {error && (
-            <p role="alert">{error}</p>
-          )}
-          <button disabled={isSubmitting} type="submit">
+          {error && <p className="login-form__error" role="alert">{error}</p>}
+          <button className="login-form__submit" disabled={isSubmitting} type="submit">
             {isSubmitting ? 'Logging in...' : 'Log in'}
           </button>
         </form>

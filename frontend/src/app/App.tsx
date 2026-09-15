@@ -26,7 +26,6 @@ const AppContent = () => {
       return
     }
     window.history.replaceState({}, '', expectedPath)
-    window.history.replaceState({}, '', expectedPath)
   }, [isAuthenticated, pathname])
 
   const navigate = (path: string) => {

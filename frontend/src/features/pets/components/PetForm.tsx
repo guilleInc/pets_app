@@ -3,9 +3,11 @@ import type { Pet, PetFields } from '../types/pet'
 
 type PetFormProps = {
   pet?: Pet
-  onSubmit: (data: PetFields) => Promise<void>
+  onSubmit: (data: PetFields, image?: File) => Promise<void>
   onCancel?: () => void
 }
+
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024
 
 type FormValues = Omit<PetFields, 'age'> & {
   age: string
@@ -34,16 +36,41 @@ const getFormValues = (pet?: Pet): FormValues =>
 
 export const PetForm = ({ pet, onSubmit, onCancel }: PetFormProps) => {
   const [values, setValues] = useState<FormValues>(() => getFormValues(pet))
+  const [image, setImage] = useState<File | undefined>()
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     setValues(getFormValues(pet))
+    setImage(undefined)
     setError(null)
   }, [pet])
 
   const handleChange = (field: keyof FormValues, value: string) => {
     setValues((current) => ({ ...current, [field]: value }))
+  }
+
+  const handleImageChange = (file: File | undefined) => {
+    setError(null)
+
+    if (!file) {
+      setImage(undefined)
+      return
+    }
+
+    if (!file.type.startsWith('image/')) {
+      setImage(undefined)
+      setError('Select an image file.')
+      return
+    }
+
+    if (file.size > MAX_IMAGE_SIZE) {
+      setImage(undefined)
+      setError('The image must be smaller than 10 MB.')
+      return
+    }
+
+    setImage(file)
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -66,7 +93,7 @@ export const PetForm = ({ pet, onSubmit, onCancel }: PetFormProps) => {
         color: values.color.trim(),
         owner_name: values.owner_name.trim(),
         age,
-      })
+      }, image)
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'Unable to save pet.')
     } finally {
@@ -122,6 +149,14 @@ export const PetForm = ({ pet, onSubmit, onCancel }: PetFormProps) => {
           type="number"
           value={values.age}
           onChange={(event) => handleChange('age', event.target.value)}
+        />
+      </label>
+      <label>
+        {pet?.image_url ? 'Change image' : 'Add image'}
+        <input
+          accept="image/*"
+          type="file"
+          onChange={(event) => handleImageChange(event.target.files?.[0])}
         />
       </label>
       {error && <p role="alert">{error}</p>}

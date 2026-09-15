@@ -14,14 +14,18 @@ const request = async <T>(
   path: string,
   { body, headers, ...options }: RequestOptions = {},
 ): Promise<T> => {
+  const isFormData = body instanceof FormData
+
   const response = await fetch(`${baseUrl}/${path.replace(/^\/+/, '')}`, {
     ...options,
     headers: {
       Accept: 'application/json',
-      ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
+      ...(body === undefined || isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...headers,
     },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    ...(body === undefined
+      ? {}
+      : { body: isFormData ? body : JSON.stringify(body) }),
   })
 
   const responseText = await response.text()

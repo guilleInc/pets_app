@@ -27,29 +27,51 @@ export const usePets = () => {
     void loadPets()
   }, [loadPets])
 
-  const createPet = useCallback(async (data: PetCreate) => {
+  const createPet = useCallback(async (data: PetCreate): Promise<Pet> => {
     setIsLoading(true)
     setError(null)
 
     try {
-      await petsApi.create(data)
+      const createdPet = await petsApi.create(data)
       await loadPets()
+      return createdPet
     } catch (error: unknown) {
-      setError(getErrorMessage(error))
+      const message = getErrorMessage(error)
+      setError(message)
       setIsLoading(false)
+      throw error instanceof Error ? error : new Error(message)
     }
   }, [loadPets])
 
-  const updatePet = useCallback(async (id: number, data: PetUpdate) => {
+  const uploadPetImage = useCallback(async (id: number, image: File): Promise<Pet> => {
     setIsLoading(true)
     setError(null)
 
     try {
-      await petsApi.update(id, data)
+      const updatedPet = await petsApi.uploadImage(id, image)
       await loadPets()
+      return updatedPet
     } catch (error: unknown) {
-      setError(getErrorMessage(error))
+      const message = getErrorMessage(error)
+      setError(message)
       setIsLoading(false)
+      throw error instanceof Error ? error : new Error(message)
+    }
+  }, [loadPets])
+
+  const updatePet = useCallback(async (id: number, data: PetUpdate): Promise<Pet> => {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const updatedPet = await petsApi.update(id, data)
+      await loadPets()
+      return updatedPet
+    } catch (error: unknown) {
+      const message = getErrorMessage(error)
+      setError(message)
+      setIsLoading(false)
+      throw error instanceof Error ? error : new Error(message)
     }
   }, [loadPets])
 
@@ -72,6 +94,7 @@ export const usePets = () => {
     error,
     loadPets,
     createPet,
+    uploadPetImage,
     updatePet,
     deletePet,
   }

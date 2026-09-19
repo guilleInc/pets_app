@@ -45,10 +45,12 @@ repository secrets:
 - `GHCR_TOKEN`: token with `read:packages` permission
 
 The EC2 instance must have Docker Engine and the Docker Compose plugin
-installed. The backend source and Dockerfile must be available under
-`backend/` in the GitHub Actions checkout before the publish and deploy jobs
-can run. The current `.gitignore` excludes `/backend/`, so remove that rule if
-the backend will be committed into this repository.
+installed. The backend is tracked as the `backend/` Git submodule, so remember
+to initialize submodules when checking out this repository locally:
+
+```bash
+git submodule update --init --recursive
+```
 
 ## Backend
 

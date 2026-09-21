@@ -52,6 +52,21 @@ to initialize submodules when checking out this repository locally:
 git submodule update --init --recursive
 ```
 
+To update the backend version deployed by this repository, fetch the desired
+backend commit and commit the updated submodule reference:
+
+```bash
+git -C backend fetch origin
+git -C backend checkout <backend-commit>
+git add backend
+git commit -m "Update backend version"
+git push
+```
+
+That parent-repository commit triggers the workflow. The workflow checks out
+the pinned backend commit, builds both images, publishes them to GHCR, and
+deploys the matching frontend and backend versions to EC2.
+
 ## Backend
 
 The backend directory is reserved for the FastAPI application.

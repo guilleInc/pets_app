@@ -1,0 +1,27 @@
+services:
+  backend:
+    image: ${BACKEND_IMAGE:-ghcr.io/guilleinc/pets-app-backend:latest}
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    expose:
+      - "8000"
+    volumes:
+      - backend-data:/data
+      - backend-uploads:/uploads
+
+  frontend:
+    image: ${FRONTEND_IMAGE:-ghcr.io/guilleinc/pets-app-frontend:latest}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-/api}
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+volumes:
+  backend-data:
+  backend-uploads:

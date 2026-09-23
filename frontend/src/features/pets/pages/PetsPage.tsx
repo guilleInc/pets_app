@@ -113,45 +113,51 @@ export const PetsPage = () => {
 
   return (
     <main>
-      <header>
-        <div>
-          <p>Pet management</p>
-          <h1>Pets</h1>
+      <header className="page-header">
+        <div className="page-header__inner">
+          <div className="page-header__content">
+            <p>Pet management</p>
+            <h1>Pets</h1>
+          </div>
+          <div className="page-header__actions">
+            <button type="button" onClick={handleCreate}>
+              Add pet
+            </button>
+            <button type="button" onClick={logout}>
+              Log out
+            </button>
+          </div>
         </div>
-        <button type="button" onClick={handleCreate}>
-          Add pet
-        </button>
-        <button type="button" onClick={logout}>
-          Log out
-        </button>
       </header>
 
-      <PetToolbar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
+      <div className="pets-page__content">
+        <PetToolbar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
 
-      <PetList
-        pets={visiblePets}
-        isLoading={isLoading}
-        error={error}
-        onViewDetails={handleViewDetails}
-        onEdit={handleEdit}
-        onDelete={setPetToDelete}
-      />
+        <PetList
+          pets={visiblePets}
+          isLoading={isLoading}
+          error={error}
+          onViewDetails={handleViewDetails}
+          onEdit={handleEdit}
+          onDelete={setPetToDelete}
+        />
 
-      {!isLoading && !error && filteredPets.length > 0 && (
-        <div className="pet-list-footer">
-          <p aria-live="polite">
-            Showing {visiblePets.length} of {filteredPets.length} pets
-          </p>
-          {hasMorePets && (
-            <button
-              type="button"
-              onClick={() => setVisibleCount((count) => count + PETS_PER_BATCH)}
-            >
-              Load more
-            </button>
-          )}
-        </div>
-      )}
+        {!isLoading && !error && filteredPets.length > 0 && (
+          <div className="pet-list-footer">
+            <p aria-live="polite">
+              Showing {visiblePets.length} of {filteredPets.length} pets
+            </p>
+            {hasMorePets && (
+              <button
+                type="button"
+                onClick={() => setVisibleCount((count) => count + PETS_PER_BATCH)}
+              >
+                Load more
+              </button>
+            )}
+          </div>
+        )}
+      </div>
 
       {isFormOpen && (
         <div

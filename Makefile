@@ -13,7 +13,7 @@ frontend-docker-build:
 	docker build --build-arg VITE_API_URL="$${VITE_API_URL:-/api}" -t pets-frontend ./frontend
 
 frontend-docker-run:
-	docker run --rm -p 8080:80 pets-frontend
+	docker run --rm -e APP_DOMAIN=:80 -p 8080:80 pets-frontend
 
 docker-up:
 	docker compose up --build

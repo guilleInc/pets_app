@@ -6,6 +6,9 @@ services:
       dockerfile: Dockerfile
     expose:
       - "8000"
+    environment:
+      ENVIRONMENT: production
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
     volumes:
       - backend-data:/data
       - backend-uploads:/uploads

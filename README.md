@@ -43,6 +43,7 @@ repository secrets:
 - `EC2_KNOWN_HOSTS`: verified SSH host key entry
 - `GHCR_USERNAME`: GHCR account username
 - `GHCR_TOKEN`: token with `read:packages` permission
+- `JWT_SECRET_KEY`: long random secret used to sign backend tokens
 
 The EC2 instance must have Docker Engine and the Docker Compose plugin
 installed. The backend is tracked as the `backend/` Git submodule, so remember
@@ -50,6 +51,12 @@ to initialize submodules when checking out this repository locally:
 
 ```bash
 git submodule update --init --recursive
+```
+
+Generate the JWT secret locally with:
+
+```bash
+openssl rand -base64 48
 ```
 
 To update the backend version deployed by this repository, fetch the desired

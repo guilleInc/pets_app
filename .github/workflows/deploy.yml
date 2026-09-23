@@ -142,13 +142,21 @@ jobs:
             "docker login ghcr.io --username '$GHCR_USERNAME' --password-stdin"
 
       - name: Pull and start release on EC2
+        env:
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
         run: |
+          if [ -z "$JWT_SECRET_KEY" ]; then
+            echo "JWT_SECRET_KEY secret is not configured"
+            exit 1
+          fi
+
           ssh "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<EOF
           set -eu
           cd /opt/pets-app
           cat > .env <<ENV
           FRONTEND_IMAGE=${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
           BACKEND_IMAGE=${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+          JWT_SECRET_KEY=$JWT_SECRET_KEY
           ENV
           docker compose pull
           docker compose up -d --no-build

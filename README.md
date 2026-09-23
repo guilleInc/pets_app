@@ -23,9 +23,12 @@ Build and run the frontend and backend containers together:
 make docker-up
 ```
 
-The application is then available at `http://localhost:8080`. The frontend
-proxies `/api/` to the `backend` service on port `8000`, which is kept internal
-to the Compose network. Stop the services with:
+The application is then available through the Caddy frontend container on
+ports `80` and `443`. Caddy serves the compiled React application, proxies
+`/api/` to the `backend` service on port `8000`, and keeps the backend internal
+to the Compose network. For local development, Compose defaults to `localhost`;
+use `APP_DOMAIN=localhost docker compose up --build` and accept Caddy's local
+certificate when testing HTTPS. Stop the services with:
 
 ```bash
 make docker-down
@@ -41,12 +44,18 @@ repository secrets:
 - `EC2_USER`: SSH user
 - `EC2_SSH_KEY`: private deployment key
 - `EC2_KNOWN_HOSTS`: verified SSH host key entry
+- `APP_DOMAIN`: public DNS name for the application, such as `pets.example.com`
 - `GHCR_USERNAME`: GHCR account username
 - `GHCR_TOKEN`: token with `read:packages` permission
 - `JWT_SECRET_KEY`: long random secret used to sign backend tokens
 
 The EC2 instance must have Docker Engine and the Docker Compose plugin
-installed. The backend is tracked as the `backend/` Git submodule, so remember
+installed. Its security group and any host firewall must allow inbound TCP
+traffic on ports `80` and `443` (and UDP `443` if HTTP/3 is desired). Create a
+DNS `A` record for `APP_DOMAIN` pointing to the EC2 public address before the
+first deployment. Caddy obtains the public certificate from Let's Encrypt and
+renews it automatically; certificate state is persisted in the `caddy-data`
+Docker volume. The backend is tracked as the `backend/` Git submodule, so remember
 to initialize submodules when checking out this repository locally:
 
 ```bash

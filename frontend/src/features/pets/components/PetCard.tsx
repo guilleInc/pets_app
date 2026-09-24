@@ -42,6 +42,11 @@ export const PetCard = ({ pet, onViewDetails, onEdit, onDelete }: PetCardProps) 
     onDelete(pet.id)
   }
 
+  const imageSrc =
+    hasImageError || !pet.image_url
+      ? '/pet-placeholder.svg'
+      : `${import.meta.env.VITE_API_URL}${pet.image_url}`
+
   return (
     <article
       aria-label={`View details for ${pet.name}`}
@@ -61,7 +66,7 @@ export const PetCard = ({ pet, onViewDetails, onEdit, onDelete }: PetCardProps) 
           alt={pet.image_url ? `${pet.name}, ${pet.species}` : `No image available for ${pet.name}`}
           className="pet-card__image"
           loading="lazy"
-          src={hasImageError ? '/pet-placeholder.svg' : pet.image_url ?? '/pet-placeholder.svg'}
+          src={imageSrc}
           onError={() => setHasImageError(true)}
         />
         <div

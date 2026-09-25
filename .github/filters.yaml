@@ -1,0 +1,7 @@
+frontend:
+  - "frontend/**"
+
+backend:
+  # The exact path matches changes to the backend submodule pointer.
+  - "backend"
+  - "backend/**"

@@ -36,8 +36,12 @@ make docker-down
 
 ## Deployment
 
-The `Build and deploy` workflow publishes both images to GHCR and deploys the
-release to `/opt/pets-app` on EC2 after a push to `main`. Configure these
+The `Build and deploy` workflow publishes changed images to GHCR and deploys
+the release to `/opt/pets-app` on EC2 after a push to `main`. A frontend change
+rebuilds only the frontend image, and a backend submodule change rebuilds only
+the backend image. The deployment uses the newly published commit tag for a
+changed service and the existing `latest` tag for an unchanged service.
+Configure these
 repository secrets:
 
 - `EC2_HOST`: EC2 hostname or public IP
@@ -80,8 +84,8 @@ git push
 ```
 
 That parent-repository commit triggers the workflow. The workflow checks out
-the pinned backend commit, builds both images, publishes them to GHCR, and
-deploys the matching frontend and backend versions to EC2.
+the pinned backend commit, selectively builds and publishes the changed image,
+and deploys the matching frontend and backend versions to EC2.
 
 ## Backend
 

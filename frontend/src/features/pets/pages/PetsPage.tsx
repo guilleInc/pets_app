@@ -176,6 +176,7 @@ export const PetsPage = () => {
       <PetSidebar
         isCollapsed={isSidebarCollapsed}
         onAddPet={handleCreate}
+        onLogout={logout}
         onToggle={() => setIsSidebarCollapsed((collapsed) => !collapsed)}
       />
 
@@ -193,9 +194,6 @@ export const PetsPage = () => {
                   {username}
                 </span>
               )}
-              <button type="button" onClick={logout}>
-                Log out
-              </button>
             </div>
           </div>
         </header>

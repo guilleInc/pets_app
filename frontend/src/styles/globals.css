@@ -140,7 +140,9 @@ main {
 .pet-sidebar {
   background: white;
   border-right: 1px solid #dbe5f3;
+  display: flex;
   flex: 0 0 220px;
+  flex-direction: column;
   align-self: flex-start;
   height: 100vh;
   overflow: hidden;
@@ -180,6 +182,21 @@ main {
   display: grid;
   gap: 0.35rem;
   padding: 1.75rem 0.75rem 1rem;
+}
+
+.pet-sidebar__section-title {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.25rem;
+  padding: 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.pet-sidebar__footer {
+  margin-top: auto;
+  padding: 0.75rem;
 }
 
 .pet-sidebar__link {
@@ -280,6 +297,7 @@ main {
   align-items: center;
   color: #334155;
   display: inline-flex;
+  font-size: 1.15rem;
   gap: 0.45rem;
   font-weight: 600;
 }

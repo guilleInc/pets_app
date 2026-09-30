@@ -18,6 +18,38 @@ const isAuthToken = (value: unknown): value is AuthToken => {
   )
 }
 
+export const getUsernameFromToken = (token: AuthToken | null): string | null => {
+  if (!token) {
+    return null
+  }
+
+  const encodedPayload = token.access_token.split('.')[1]
+
+  if (!encodedPayload) {
+    return null
+  }
+
+  try {
+    const normalizedPayload = encodedPayload.replace(/-/g, '+').replace(/_/g, '/')
+    const paddedPayload = normalizedPayload.padEnd(Math.ceil(normalizedPayload.length / 4) * 4, '=')
+    const payload: unknown = JSON.parse(atob(paddedPayload))
+
+    if (
+      typeof payload === 'object' &&
+      payload !== null &&
+      'user' in payload &&
+      typeof payload.user === 'string' &&
+      payload.user.trim()
+    ) {
+      return payload.user
+    }
+  } catch {
+    return null
+  }
+
+  return null
+}
+
 export const tokenStorage = {
   get: (): AuthToken | null => {
     const storedToken = localStorage.getItem(TOKEN_STORAGE_KEY)

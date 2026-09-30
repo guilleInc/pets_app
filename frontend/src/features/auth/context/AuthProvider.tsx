@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import { authApi } from '../api/authApi'
-import { AUTH_EXPIRED_EVENT, tokenStorage } from '../storage/tokenStorage'
+import {
+  AUTH_EXPIRED_EVENT,
+  getUsernameFromToken,
+  tokenStorage,
+} from '../storage/tokenStorage'
 import { AuthContext } from './authContext'
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -32,6 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <AuthContext.Provider
       value={{
         isAuthenticated: token !== null,
+        username: getUsernameFromToken(token),
         token,
         login,
         logout,
